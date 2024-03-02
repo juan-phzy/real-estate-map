@@ -23,66 +23,74 @@
 	}
 
 	.root-body {
-		@apply border-solid border-4 border-red-600
-    flex flex-col justify-center items-center
-    w-full h-screen
-    min-w-[400px] min-h-[600px];
+		@apply /* border-solid border-4 border-red-600 */
+		flex flex-col justify-center items-center
+		w-full h-screen
+		min-w-[400px] min-h-[600px];
 	}
 
 	.body-container {
-		@apply border-solid border-4 border-purple-400
-    flex flex-col justify-start items-center
-    w-full h-full;
+		@apply /* border-solid border-4 border-purple-400 */
+		flex flex-col justify-start items-center
+		w-full h-full;
 	}
 
 	.main-container {
-		@apply border-solid border-4 border-yellow-400
-    flex justify-start items-center
-    w-full h-full;
+		@apply /* border-solid border-4 border-yellow-400 */
+    	flex justify-start items-center
+    	w-full h-full;
 	}
 }
 
 /* Header Styling */
 @layer components {
 	.header-container {
-		@apply border-solid border-4 border-blue-500
-    flex justify-center items-center
-    w-full h-[70px];
+		@apply /* border-solid border-4 border-blue-500 */
+    	flex justify-center items-center
+    	w-full h-[70px];
 	}
 
 	.header {
-		@apply border-solid border-4 border-orange-500
-    flex justify-center items-center
-    w-full h-full;
+		@apply /* border-solid border-4 border-orange-500 */
+		bg-slate-800
+		text-white text-2xl
+    	flex justify-center items-center
+    	w-full h-full;
 	}
 }
 
 /* Sidebar Styling */
 @layer components {
 	.sidebar-container {
-		@apply border-solid border-4 border-blue-500
-    flex justify-center items-center
-    w-[300px] h-full;
+		@apply /* border-solid border-4 border-blue-500 */
+    	flex justify-center items-center
+    	w-[300px] h-full;
 	}
 
 	.sidebar {
-		@apply border-solid border-4 border-orange-500
-    flex justify-center items-center
-    w-full h-full;
+		@apply /* border-solid border-4 border-orange-500 */
+		bg-slate-700
+		text-white text-2xl
+    	flex justify-center items-center
+    	w-full h-full;
 	}
 }
 
 /* Main Content Styling */
 @layer components {
 	.main-content {
-		@apply border-solid border-4 border-blue-500
-    flex justify-center items-center
-    w-full h-full;
+		@apply /* border-solid border-4 border-blue-500 */
+    	flex justify-center items-center
+    	w-full h-full;
 	}
 
 	.main {
-		@apply border-solid border-4 border-orange-500
-    flex justify-center items-center
-    w-full h-full;
+		@apply /* border-solid border-4 border-orange-500 */
+		bg-slate-500
+		text-white text-2xl
+    	flex flex-col justify-center items-center
+		gap-5
+		p-5
+    	w-full h-full;
 	}
 }
