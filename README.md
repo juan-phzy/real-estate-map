@@ -1,6 +1,10 @@
-## Join the Trello
+## Trello Task Updates
 
 [Click here to join the trello](https://trello.com/invite/b/h2cknMPC/ATTI4658cead04a16fa398456263b4cbf5bb01BBE948/open-aves-meridian-internship)
+
+## Vercel Deployment
+
+[Click here to view the active deployment](https://real-estate-map-woad.vercel.app/)
 
 ## Description
 

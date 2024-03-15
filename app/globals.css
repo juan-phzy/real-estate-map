@@ -3,31 +3,94 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* Root Styling */
+@layer base {
+	body {
+		@apply box-border;
+	}
+
+	.root-body {
+		@apply /* border-solid border-4 border-red-600 */
+		flex flex-col justify-center items-center
+		w-full h-screen
+		min-w-[400px] min-h-[600px];
+	}
+
+	.body-container {
+		@apply /* border-solid border-4 border-purple-400 */
+		flex flex-col justify-start items-center
+		w-full h-full;
+	}
+
+	.main-container {
+		@apply /* border-solid border-4 border-yellow-400 */
+    	flex justify-start items-center
+    	w-full h-full;
+	}
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Header Styling */
+@layer components {
+	.header-container {
+		@apply /* border-solid border-4 border-blue-500 */
+    	flex justify-center items-center
+    	w-full h-[70px];
+	}
+
+	.header {
+		@apply /* border-solid border-4 border-orange-500 */
+		bg-slate-800
+		text-white text-2xl
+    	flex justify-center items-center
+    	w-full h-full;
+	}
+}
+
+/* Sidebar Styling */
+@layer components {
+	.sidebar-container {
+		@apply /* border-solid border-4 border-blue-500 */
+    	flex justify-center items-center
+    	w-[300px] h-full;
+	}
+
+	.sidebar {
+		@apply /* border-solid border-4 border-orange-500 */
+		bg-slate-700
+		text-white text-2xl
+    	flex justify-center items-center
+    	w-full h-full;
+	}
+}
+
+/* Main Content Styling */
+@layer components {
+	.main-content {
+		@apply /* border-solid border-4 border-blue-500 */
+    	flex justify-center items-center
+    	w-full h-full;
+	}
+
+	.main {
+		@apply /* border-solid border-4 border-orange-500 */
+		bg-slate-500
+		text-white text-2xl
+    	flex flex-col justify-center items-center
+		gap-5
+		p-5
+    	w-full h-full;
+	}
 }
