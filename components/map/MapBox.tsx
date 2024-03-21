@@ -5,21 +5,19 @@ import Map, { Marker } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = process.env.MB_TOKEN; // Set your mapbox token here
-
 export default function MapBox() {
 	return (
 		<Map
-			mapboxAccessToken={MAPBOX_TOKEN}
+			mapboxAccessToken={process.env.MAPBOX_TOKEN}
 			initialViewState={{
-				latitude: 37.8,
-				longitude: -122.4,
-				zoom: 14,
+				latitude: 40.747783,
+				longitude: -74.016226,
+				zoom: 13.5, //40.747783, -74.026226
 			}}
-			style={{ width: 600, height: 300 }}
-			// mapStyle="mapbox://styles/mapbox/streets-v9"
+			style={{ width: "100%", height: "100%" }}
+			mapStyle="mapbox://styles/juan-phzy/clu1ks59f000201pabasxbja0"
 		>
-			<Marker longitude={-122.4} latitude={37.8} color="red" />
+			<Marker longitude={40.7} latitude={-74} color="red" />
 		</Map>
 	);
 }
