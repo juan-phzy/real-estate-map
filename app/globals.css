@@ -6,6 +6,10 @@
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
 	--background-end-rgb: 255, 255, 255;
+
+	.mapboxgl-popup-content {
+		padding: 0;
+	}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -37,8 +41,9 @@
 
 	.main-container {
 		@apply /* border-solid border-4 border-yellow-400 */
-    	flex justify-start items-center
-    	w-full h-full;
+    	flex flex-col-reverse justify-start items-center
+    	w-full h-full
+		lg:flex-row;
 	}
 }
 
@@ -47,14 +52,16 @@
 	.header-container {
 		@apply /* border-solid border-4 border-blue-500 */
     	flex justify-center items-center
-    	w-full h-[70px];
+    	w-full h-[90px];
 	}
 
 	.header {
 		@apply /* border-solid border-4 border-orange-500 */
 		bg-slate-800
 		text-white text-2xl
-    	flex justify-center items-center
+		py-2
+		px-4
+    	flex flex-row justify-between items-center
     	w-full h-full;
 	}
 }
@@ -64,15 +71,19 @@
 	.sidebar-container {
 		@apply /* border-solid border-4 border-blue-500 */
     	flex justify-center items-center
-    	w-[300px] h-full;
+    	w-full h-full 
+		lg:w-[445px]
+		lg:shrink-0;
 	}
 
 	.sidebar {
 		@apply /* border-solid border-4 border-orange-500 */
 		bg-slate-700
 		text-white text-2xl
-    	flex justify-center items-center
-    	w-full h-full;
+    	flex flex-col justify-start items-center
+    	w-full h-full
+		gap-4
+		p-4;
 	}
 }
 
@@ -81,7 +92,8 @@
 	.main-content {
 		@apply /* border-solid border-4 border-blue-500 */
     	flex justify-center items-center
-    	w-full h-full;
+    	w-full h-[45%]
+		lg:h-full;
 	}
 
 	.main {
@@ -90,7 +102,49 @@
 		text-white text-2xl
     	flex flex-col justify-center items-center
 		gap-5
-		p-5
     	w-full h-full;
+	}
+}
+
+/* MapBox PopUp Styling */
+@layer components {
+	.popupTitle {
+		@apply bg-blue-900
+		p-2
+		text-lg
+		text-white;
+	}
+	.popupInfo {
+		@apply bg-white
+		p-2
+		text-black;
+	}
+	.popupLabel {
+		@apply font-bold text-black;
+	}
+}
+
+/* Property Card Styling */
+@layer components {
+	.cards-container {
+		@apply flex flex-col justify-center items-center gap-2;
+	}
+
+	.property-card-container {
+		@apply flex flex-col justify-center items-center
+		w-full h-full
+		rounded-lg
+		bg-white
+		text-black
+		p-2;
+	}
+	.property-card-title {
+		@apply flex justify-start items-center
+		bg-white
+		font-bold
+		text-lg;
+	}
+	.property-card-info {
+		@apply text-sm font-light;
 	}
 }

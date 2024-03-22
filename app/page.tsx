@@ -1,12 +1,12 @@
-import BasicTabs from "@/components/shared/BasicTabs";
+"use client";
+
+import MapBox from "@/components/map/MapBox";
 
 const page = () => {
 	return (
 		<section className="main">
-			<div className="text-4xl">This is the home page</div>
-			<div className="bg-slate-200 text-black flex justify-center items-center gap-10 w-[70%] h-fit p-9 flex justify-center items-center">
-				And this is a content block with a material ui sample component
-				<BasicTabs />
+			<div className="bg-slate-200 text-black flex justify-center items-center gap-10 w-full h-full">
+				<MapBox />
 			</div>
 		</section>
 	);
