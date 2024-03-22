@@ -4,6 +4,9 @@ import "./globals.css";
 import Header from "@/components/shared/Header";
 import Sidebar from "@/components/shared/Sidebar";
 
+import { ApolloProvider } from "@apollo/client";
+import client from "@/apolloClient";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
