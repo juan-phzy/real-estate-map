@@ -1,3 +1,5 @@
+"use client";
+
 import MapBox from "@/components/map/MapBox";
 
 const page = () => {
