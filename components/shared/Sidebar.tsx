@@ -1,13 +1,10 @@
-import React from "react";
 import QueryComp from "../QueryComp";
 
 const Sidebar = () => {
 	return (
 		<div className="sidebar">
-			<div className="w-full h-[20%] min-h-fit border-solid border-white border-2">
-				Query
-			</div>
-			<div className="w-full h-[50%] min-h-fit border-solid border-white border-2">
+			<div className="w-full h-fit text-4xl">Properties</div>
+			<div className="w-full h-full">
 				<QueryComp />
 			</div>
 		</div>

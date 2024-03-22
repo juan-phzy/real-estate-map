@@ -102,6 +102,27 @@ export default function MapBox() {
 					<Layer layout={{ visibility: vis }} {...layerStyle} />
 				</Source>
 
+				<Source
+					id="mapbox-terrain"
+					type="vector"
+					url="mapbox://mapbox.mapbox-terrain-v2"
+				>
+					<Layer
+						id="terrain-data"
+						source="mapbox-terrain"
+						type="line"
+						source-layer="contour"
+						layout={{
+							"line-join": "round",
+							"line-cap": "round",
+						}}
+						paint={{
+							"line-color": "#ff69b4",
+							"line-width": 1,
+						}}
+					/>
+				</Source>
+
 				{hobokenParks.features.map((park, index) => {
 					return (
 						<Marker

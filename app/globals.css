@@ -80,7 +80,7 @@
 		@apply /* border-solid border-4 border-orange-500 */
 		bg-slate-700
 		text-white text-2xl
-    	flex flex-col justify-center items-center
+    	flex flex-col justify-start items-center
     	w-full h-full
 		gap-4
 		p-4;
@@ -121,5 +121,30 @@
 	}
 	.popupLabel {
 		@apply font-bold text-black;
+	}
+}
+
+/* Property Card Styling */
+@layer components {
+	.cards-container {
+		@apply flex flex-col justify-center items-center gap-2;
+	}
+
+	.property-card-container {
+		@apply flex flex-col justify-center items-center
+		w-full h-full
+		rounded-lg
+		bg-white
+		text-black
+		p-2;
+	}
+	.property-card-title {
+		@apply flex justify-start items-center
+		bg-white
+		font-bold
+		text-lg;
+	}
+	.property-card-info {
+		@apply text-sm font-light;
 	}
 }

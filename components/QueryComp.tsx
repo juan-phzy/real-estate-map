@@ -3,42 +3,66 @@ import { gql } from "@apollo/client";
 export const dynamic = "force-dynamic";
 
 import { useSuspenseQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import PropertyCard from "./cards/PropertyCard";
 
-const GET_TAX_ASSESSORS = gql`
-	query {
-		attomTaxAssessors(first: 5) {
-			hasNextPage
-			items {
-				PropertyAddressFull
-				PropertyLatitude
-				PropertyLongitude
-				ATTOM_ID
-				parcel_id
-				PropertyAddressZIP
-				PropertyAddressCity
-			}
-			endCursor
-		}
-	}
-`;
+type TaxAssessorsData = {
+	attomTaxAssessors: {
+		hasNextPage: boolean;
+		items: PropertyData[];
+		endCursor: string | null;
+	};
+};
+
+type PropertyData = {
+	PropertyAddressFull: string;
+	PropertyLatitude: string;
+	PropertyLongitude: string;
+	ATTOM_ID: string;
+	parcel_id: string;
+	PropertyAddressZIP: string;
+	PropertyAddressCity: string;
+	AreaLotSF: string;
+	TaxAssessedValueTotal: string;
+	BathCount: string;
+	BedroomsCount: string;
+};
 
 export default function PollPage() {
-	const { data } = useSuspenseQuery(GET_TAX_ASSESSORS);
+	const GET_TAX_ASSESSORS = gql`
+		query {
+			attomTaxAssessors(
+				first: 5
+				filter: {
+					PropertyAddressZIP: { isNull: false }
+					PropertyAddressCity: { isNull: false }
+				}
+			) {
+				hasNextPage
+				items {
+					PropertyAddressFull
+					PropertyLatitude
+					PropertyLongitude
+					ATTOM_ID
+					parcel_id
+					PropertyAddressZIP
+					PropertyAddressCity
+					AreaLotSF
+					TaxAssessedValueTotal
+					BathCount
+					BedroomsCount
+				}
+				endCursor
+			}
+		}
+	`;
 
-	const displayData = () => {
-		console.log(data.attomTaxAssessors);
-		console.log(data.attomTaxAssessors.items);
-	};
+	const { data } = useSuspenseQuery<TaxAssessorsData>(GET_TAX_ASSESSORS);
 
 	return (
-		<div className="flex flex-col justify-start items-start">
-			{/*data*/ `Data`}{" "}
-			<button
-				className="bg-gray-800 border-solid border-white border-1 p-2"
-				onClick={displayData}
-			>
-				Display Data
-			</button>
+		<div className="cards-container">
+			{data.attomTaxAssessors.items.map((property, index) => {
+				return <PropertyCard key={property.ATTOM_ID} p={property} />;
+			})}
 		</div>
 	);
 }
