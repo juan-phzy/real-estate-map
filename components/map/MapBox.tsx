@@ -73,6 +73,12 @@ export default function MapBox() {
 		}
 	};
 
+	const handleClick = (event: any) => {
+		if (event.features.length > 0) {
+			console.log(event);
+		}
+	};
+
 	const toggleLayer = () => {
 		if (vis === "visible") {
 			setVis("none");
@@ -93,6 +99,8 @@ export default function MapBox() {
 				}}
 				style={{ width: "100%", height: "100%" }}
 				mapStyle="mapbox://styles/mapbox/dark-v11"
+				onClick={handleClick}
+				interactiveLayerIds={[`parcel-fill-layer`]}
 			>
 				<GeolocateControl position="top-right" />
 				<NavigationControl position="top-right" />
@@ -102,7 +110,7 @@ export default function MapBox() {
 					<Layer layout={{ visibility: vis }} {...layerStyle} />
 				</Source>
 
-				<Source
+				{/* <Source
 					id="mapbox-terrain"
 					type="vector"
 					url="mapbox://mapbox.mapbox-terrain-v2"
@@ -119,6 +127,38 @@ export default function MapBox() {
 						paint={{
 							"line-color": "#ff69b4",
 							"line-width": 1,
+						}}
+					/>
+				</Source> */}
+
+				<Source
+					id="parcel-source"
+					type="vector"
+					url="mapbox://svayser.ae1mculr"
+				>
+					<Layer
+						id="parcel-line-layer"
+						source="parcel-source"
+						type="line"
+						source-layer="manhattan_staten_island_parce-7ng65o"
+						layout={{
+							"line-join": "round",
+							"line-cap": "round",
+						}}
+						paint={{
+							"line-color": "#ff69b4",
+							"line-width": 1,
+						}}
+					/>
+
+					<Layer
+						id="parcel-fill-layer"
+						source="parcel-source"
+						type="fill"
+						source-layer="manhattan_staten_island_parce-7ng65o"
+						paint={{
+							"fill-color": "#6F788A",
+							"fill-opacity": 0.7,
 						}}
 					/>
 				</Source>
