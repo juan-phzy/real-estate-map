@@ -88,7 +88,7 @@ export default function MapBox() {
 						zoom: 13, //40.747783, -74.026226
 					}}
 					style={{ width: "100%", height: "100%" }}
-					mapStyle="mapbox://styles/juan-phzy/cluvk1xks001d01nu8b14bs9p"
+					mapStyle="mapbox://styles/juan-phzy/cluvmhrg0000s01nr30rzdo5n"
 					onClick={handleClick}
 					onMouseMove={handleHover}
 					onMouseLeave={handleMouseLeave}
@@ -107,15 +107,15 @@ export default function MapBox() {
 							id="parcel-line-layer"
 							source="parcel-source"
 							type="line"
-							beforeId="land-structure-polygon"
+							beforeId="aerialway"
 							source-layer="manhattan_staten_island_parce-7ng65o"
 							layout={{
 								"line-join": "round",
 								"line-cap": "round",
 							}}
 							paint={{
-								"line-color": "#ff69b4",
-								"line-width": 1,
+								"line-color": "#00fff2",
+								"line-width": 2,
 							}}
 						/>
 
@@ -123,16 +123,16 @@ export default function MapBox() {
 							id="parcel-fill-layer"
 							source="parcel-source"
 							type="fill"
-							beforeId="land-structure-polygon"
+							beforeId="aerialway"
 							source-layer="manhattan_staten_island_parce-7ng65o"
 							paint={{
 								"fill-color": [
 									"case",
 									["==", ["id"], clickedFeatureId], // Condition for clicked feature
-									"#6c00ab", // Color for clicked feature
+									"#00fff6", // Color for clicked feature
 									["==", ["id"], hoveredFeatureId], // Condition for hovered feature
 									"#ff69b4", // Color for hovered feature
-									"#6F788A", // Default color
+									"#194f4d", // Default color
 								],
 								"fill-opacity": 0.7,
 							}}
