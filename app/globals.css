@@ -156,15 +156,6 @@ body {
 
 		sm:h-full;
 	}
-	.map-layer-toggle-btn {
-		@apply w-fit h-fit 
-		absolute top-5 left-5
-		bg-white
-		text-black 
-		text-sm 
-		rounded-md 
-		p-2;
-	}
 }
 
 /* MapBox PopUp Styling */

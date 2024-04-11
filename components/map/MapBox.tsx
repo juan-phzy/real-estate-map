@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { useState, useRef } from "react";
 
 import Map, {
@@ -20,36 +22,43 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Sidebar from "../shared/Sidebar";
 
 export default function MapBox() {
+	//URL Functionality
+	const router = useRouter();
+	const searchParams = useSearchParams();
+
+	const urlPID = searchParams.get("pID");
+	const urlFID = searchParams.get("fID");
+
+	//Parcel Functionality
 	const [hoveredFeatureId, setHoveredFeatureId] = useState<
 		string | number | undefined | null
 	>(null);
 	const [clickedFeatureId, setClickedFeatureId] = useState<
 		string | number | undefined | null
-	>(null);
+	>(urlFID ? urlFID : null);
 
-	const [parcelID, setParcelID] = useState<string | null>(null);
+	const [parcelID, setParcelID] = useState<string | null>(
+		urlPID ? urlPID : null
+	);
 
+	//Map Functionality
 	const [vis, setVis] = useState<Visibility>("visible");
-
 	const mapRef = useRef<MapRef>(null);
 
+	//Utility Functions
 	const handleClick = (event: MapLayerMouseEvent) => {
 		const feature = event.features && event.features[0];
 		if (feature && feature.layer.id === "parcel-fill-layer") {
 			setClickedFeatureId(feature.id);
 			setParcelID(feature.properties?.ID);
 			console.log(feature.properties?.ID);
+			router.push(`/?pID=${feature.properties?.ID}&fID=${feature.id}`, {
+				scroll: false,
+			});
 		} else {
 			setClickedFeatureId(null); // Reset when map is clicked outside any feature
 			setParcelID(null);
-		}
-	};
-
-	const toggleLayer = () => {
-		if (vis === "visible") {
-			setVis("none");
-		} else {
-			setVis("visible");
+			router.replace("/", { scroll: false });
 		}
 	};
 
@@ -118,7 +127,7 @@ export default function MapBox() {
 								"fill-color": [
 									"case",
 									["==", ["id"], clickedFeatureId], // Condition for clicked feature
-									"#ff0000", // Color for clicked feature
+									"#6c00ab", // Color for clicked feature
 									["==", ["id"], hoveredFeatureId], // Condition for hovered feature
 									"#ff69b4", // Color for hovered feature
 									"#6F788A", // Default color
@@ -128,9 +137,6 @@ export default function MapBox() {
 						/>
 					</Source>
 				</Map>
-				<button onClick={toggleLayer} className="map-layer-toggle-btn">
-					Toggle Layer
-				</button>
 			</div>
 		</section>
 	);

@@ -71,6 +71,12 @@ const PropertyDetails = ({ pID }: Props) => {
 	const { data } = useSuspenseQuery<PropertyData>(GET_PROPERTY_INFO);
 	const featureData = data.reonomyProperties.items[0];
 
+	const propertyDataArray = Object.entries(data.reonomyProperties.items[0]);
+	const buildingData = propertyDataArray.slice(1, 14);
+	const lotData = propertyDataArray.slice(14, 22);
+	const locData = propertyDataArray.slice(22, 28);
+	const zoneData = propertyDataArray.slice(28, 34);
+
 	return (
 		<section className="property-details-container">
 			<div className="pd-title">
@@ -153,7 +159,10 @@ const PropertyDetails = ({ pID }: Props) => {
 			</div>
 			{featureData ? (
 				<div className="pd-cards">
-					<DetailCard title={`Building`} pdata={data} />
+					<DetailCard title={`Building`} data={buildingData} />
+					<DetailCard title={`Lot`} data={lotData} />
+					<DetailCard title={`Location`} data={locData} />
+					<DetailCard title={`Zoning`} data={zoneData} />
 				</div>
 			) : (
 				<></>
