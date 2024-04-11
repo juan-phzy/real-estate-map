@@ -71,11 +71,11 @@ const PropertyDetails = ({ pID }: Props) => {
 	const { data } = useSuspenseQuery<PropertyData>(GET_PROPERTY_INFO);
 	const featureData = data.reonomyProperties.items[0];
 
-	const propertyDataArray = Object.entries(data.reonomyProperties.items[0]);
-	const buildingData = propertyDataArray.slice(1, 14);
-	const lotData = propertyDataArray.slice(14, 22);
-	const locData = propertyDataArray.slice(22, 28);
-	const zoneData = propertyDataArray.slice(28, 34);
+	const propertyDataArray = featureData ? Object.entries(featureData) : null;
+	const buildingData = propertyDataArray?.slice(1, 14);
+	const lotData = propertyDataArray?.slice(14, 22);
+	const locData = propertyDataArray?.slice(22, 28);
+	const zoneData = propertyDataArray?.slice(28, 34);
 
 	return (
 		<section className="property-details-container">
@@ -110,42 +110,6 @@ const PropertyDetails = ({ pID }: Props) => {
 					) : (
 						<div></div>
 					)}
-				</span>
-			</div>
-			<div className="pd-deals">No deals found for this property</div>
-			<div className="pd-db-selector">
-				<span>
-					<input
-						type="radio"
-						id="option1"
-						name="group1"
-						value="Option 1"
-						checked={selectedOption === "Option 1"}
-						onChange={handleChange}
-					/>
-					<label htmlFor="option1">Reonomy</label>
-				</span>
-				<span>
-					<input
-						type="radio"
-						id="option2"
-						name="group1"
-						value="Option 2"
-						checked={selectedOption === "Option 2"}
-						onChange={handleChange}
-					/>
-					<label htmlFor="option2">ATTOM</label>
-				</span>
-				<span>
-					<input
-						type="radio"
-						id="option3"
-						name="group1"
-						value="Option 3"
-						checked={selectedOption === "Option 3"}
-						onChange={handleChange}
-					/>
-					<label htmlFor="option3">ACRIS</label>
 				</span>
 			</div>
 			<div className="pd-info-selector">

@@ -14,7 +14,7 @@ const Header = () => {
 				</div>
 				<div className="header-title">Lens</div>
 				<div className="header-search-container">
-					<input className="header-search" placeholder="Reonomy Search" />
+					<input className="header-search" placeholder="Search" />
 				</div>
 			</div>
 			<div className="header-user">

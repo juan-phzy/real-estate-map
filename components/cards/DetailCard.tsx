@@ -1,7 +1,7 @@
 import { PropertyData } from "@/constants";
 
 interface Props {
-	data: [string, any][];
+	data: [string, any][] | undefined;
 	title: string;
 }
 
@@ -14,7 +14,7 @@ const DetailCard = ({ data, title }: Props) => {
 					data.map(([key, value]) => (
 						<div className="dc-row" key={key}>
 							<span className="font-bold">{key}</span>
-							<span>{value}</span>
+							<span>{value ? value : "--"}</span>
 						</div>
 					))}
 			</div>
