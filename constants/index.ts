@@ -121,3 +121,54 @@ export const hobokenRestaurants: FeatureCollection = {
 	],
 	type: "FeatureCollection",
 };
+
+export interface ReonomyProperty {
+	year_built: number | null;
+	year_renovated: number | null;
+	floors: number | null;
+	sum_buildings_nbr: number | null;
+	existing_floor_area_ratio: number | null;
+	commercial_units: number | null;
+	residential_units: number | null;
+	total_units: number | null;
+	building_area: number | null;
+	max_floor_plate: number | null;
+	building_class: string | null;
+	frontage: number | null;
+	depth: number | null;
+	asset_type: string | null;
+	lot_size_sqft: number | null;
+	lot_size_acres: number | null;
+	zoning: string | null;
+	lot_size_depth_feet: number | null;
+	lot_size_frontage_feet: number | null;
+	census_tract: string | null;
+	opp_zone: boolean | null;
+	msa_name: string | null;
+	fips_county: string | null;
+	municipality: string | null;
+	mcd_name: string | null;
+	neighborhood_name: string | null;
+	legal_description: string | null;
+	zoning_district_1: string | null;
+	zoning_district_2: string | null;
+	special_purpose_district: string | null;
+	split_boundary: boolean | null;
+	sanborn_map_number: string | null;
+	address_line1: string | null;
+	city: string | null;
+	state: string | null;
+	zip5: string | null;
+	apn: string | null;
+	borough_id: string | null;
+	block_id: string | null;
+	lot_id: string | null;
+}
+
+export interface ReonomyProperties {
+	items: ReonomyProperty[];
+}
+
+export interface PropertyData {
+	reonomyProperties: ReonomyProperties;
+}

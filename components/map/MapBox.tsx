@@ -1,9 +1,6 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { FaLocationDot } from "react-icons/fa6"; //<FaLocationDot />
-
-import { hobokenParks, hobokenRestaurants } from "@/constants/index";
 
 import Map, {
 	Marker,
@@ -14,68 +11,37 @@ import Map, {
 	NavigationControl,
 	GeolocateControl,
 	FullscreenControl,
+	MapRef,
 } from "react-map-gl";
 import { Visibility } from "mapbox-gl";
+import { MapLayerMouseEvent } from "react-map-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
-
-interface parkType {
-	type: string;
-	properties: {
-		address: string;
-		rating: number;
-		name: string;
-	};
-	geometry: {
-		coordinates: number[];
-		type: string;
-	};
-	id: string;
-}
-
-const layerStyle: CircleLayer = {
-	id: "point",
-	type: "circle",
-	paint: {
-		"circle-radius": 25,
-		"circle-color": "#007cbf",
-		"circle-opacity": 0.7,
-	},
-};
+import Sidebar from "../shared/Sidebar";
 
 export default function MapBox() {
+	const [hoveredFeatureId, setHoveredFeatureId] = useState<
+		string | number | undefined | null
+	>(null);
+	const [clickedFeatureId, setClickedFeatureId] = useState<
+		string | number | undefined | null
+	>(null);
+
+	const [parcelID, setParcelID] = useState<string | null>(null);
+
 	const [vis, setVis] = useState<Visibility>("visible");
-	const [selectedMarker, setSelectedMarker] = useState<{
-		park: parkType;
-		index: number;
-	} | null>(null);
-	const mapRef = useRef(null);
 
-	const zoomToSelectedLoc = (e: any, park: parkType, index: number) => {
-		// stop event bubble-up which triggers unnecessary events
-		e.stopPropagation();
+	const mapRef = useRef<MapRef>(null);
 
-		if (!selectedMarker || selectedMarker.park != park) {
-			setSelectedMarker({ park, index });
-			mapRef.current?.flyTo({
-				center: [
-					park.geometry.coordinates[0],
-					park.geometry.coordinates[1],
-				],
-				zoom: 15,
-			});
+	const handleClick = (event: MapLayerMouseEvent) => {
+		const feature = event.features && event.features[0];
+		if (feature && feature.layer.id === "parcel-fill-layer") {
+			setClickedFeatureId(feature.id);
+			setParcelID(feature.properties?.ID);
+			console.log(feature.properties?.ID);
 		} else {
-			setSelectedMarker(null);
-			mapRef.current?.flyTo({
-				center: [-74.016226, 40.747783],
-				zoom: 13.5,
-			});
-		}
-	};
-
-	const handleClick = (event: any) => {
-		if (event.features.length > 0) {
-			console.log(event);
+			setClickedFeatureId(null); // Reset when map is clicked outside any feature
+			setParcelID(null);
 		}
 	};
 
@@ -87,130 +53,85 @@ export default function MapBox() {
 		}
 	};
 
+	const handleHover = (event: any) => {
+		const feature = event.features[0];
+		if (feature && feature.layer.id === "parcel-fill-layer") {
+			setHoveredFeatureId(feature.id);
+		}
+	};
+
+	const handleMouseLeave = () => {
+		setHoveredFeatureId(null);
+	};
+
 	return (
-		<div className="flex justify-center items-center w-full h-full relative">
-			<Map
-				ref={mapRef}
-				mapboxAccessToken={process.env.MAPBOX_TOKEN}
-				initialViewState={{
-					latitude: 40.747783,
-					longitude: -74.016226,
-					zoom: 13.5, //40.747783, -74.026226
-				}}
-				style={{ width: "100%", height: "100%" }}
-				mapStyle="mapbox://styles/mapbox/dark-v11"
-				onClick={handleClick}
-				interactiveLayerIds={[`parcel-fill-layer`]}
-			>
-				<GeolocateControl position="top-right" />
-				<NavigationControl position="top-right" />
-				<FullscreenControl position="top-right" />
-
-				<Source id="my-data" type="geojson" data={hobokenRestaurants}>
-					<Layer layout={{ visibility: vis }} {...layerStyle} />
-				</Source>
-
-				{/* <Source
-					id="mapbox-terrain"
-					type="vector"
-					url="mapbox://mapbox.mapbox-terrain-v2"
+		<section className="mapbox-component-container">
+			<div className="mapbox-sidebar">
+				<Sidebar pID={parcelID} />
+			</div>
+			<div className="map-container">
+				<Map
+					ref={mapRef}
+					mapboxAccessToken={process.env.MAPBOX_TOKEN}
+					initialViewState={{
+						latitude: 40.717793,
+						longitude: -73.995,
+						zoom: 13, //40.747783, -74.026226
+					}}
+					style={{ width: "100%", height: "100%" }}
+					mapStyle="mapbox://styles/mapbox/dark-v11"
+					onClick={handleClick}
+					onMouseMove={handleHover}
+					onMouseLeave={handleMouseLeave}
+					interactiveLayerIds={[`parcel-fill-layer`]}
 				>
-					<Layer
-						id="terrain-data"
-						source="mapbox-terrain"
-						type="line"
-						source-layer="contour"
-						layout={{
-							"line-join": "round",
-							"line-cap": "round",
-						}}
-						paint={{
-							"line-color": "#ff69b4",
-							"line-width": 1,
-						}}
-					/>
-				</Source> */}
+					<GeolocateControl position="top-right" />
+					<NavigationControl position="top-right" />
+					<FullscreenControl position="top-right" />
 
-				<Source
-					id="parcel-source"
-					type="vector"
-					url="mapbox://svayser.ae1mculr"
-				>
-					<Layer
-						id="parcel-line-layer"
-						source="parcel-source"
-						type="line"
-						source-layer="manhattan_staten_island_parce-7ng65o"
-						layout={{
-							"line-join": "round",
-							"line-cap": "round",
-						}}
-						paint={{
-							"line-color": "#ff69b4",
-							"line-width": 1,
-						}}
-					/>
-
-					<Layer
-						id="parcel-fill-layer"
-						source="parcel-source"
-						type="fill"
-						source-layer="manhattan_staten_island_parce-7ng65o"
-						paint={{
-							"fill-color": "#6F788A",
-							"fill-opacity": 0.7,
-						}}
-					/>
-				</Source>
-
-				{hobokenParks.features.map((park, index) => {
-					return (
-						<Marker
-							key={index}
-							longitude={park.geometry.coordinates[0]}
-							latitude={park.geometry.coordinates[1]}
-						>
-							<button
-								type="button"
-								className="cursor-pointer"
-								onClick={(e) => zoomToSelectedLoc(e, park, index)}
-							>
-								{<FaLocationDot size={30} color="tomato" />}
-							</button>
-						</Marker>
-					);
-				})}
-
-				{selectedMarker ? (
-					<Popup
-						className="flex flex-col justify-center items-center p-0"
-						offset={25}
-						latitude={selectedMarker.park.geometry.coordinates[1]}
-						longitude={selectedMarker.park.geometry.coordinates[0]}
-						onClose={() => {
-							setSelectedMarker(null);
-						}}
-						closeButton={false}
+					<Source
+						id="parcel-source"
+						type="vector"
+						url="mapbox://svayser.ae1mculr"
 					>
-						<h3 className={`popupTitle`}>
-							{selectedMarker.park.properties.name}
-						</h3>
-						<div className={`popupInfo`}>
-							<label className={`popupLabel`}>Address: </label>
-							<span>{selectedMarker.park.properties.address}</span>
-							<br />
-							<label className={`popupLabel`}>Rating: </label>
-							<span>{selectedMarker.park.properties.rating}</span>
-						</div>
-					</Popup>
-				) : null}
-			</Map>
-			<button
-				onClick={toggleLayer}
-				className="w-fit h-fit p-2 text-sm rounded-md bg-white text-black absolute top-5 left-5"
-			>
-				Toggle Layer
-			</button>
-		</div>
+						<Layer
+							id="parcel-line-layer"
+							source="parcel-source"
+							type="line"
+							source-layer="manhattan_staten_island_parce-7ng65o"
+							layout={{
+								"line-join": "round",
+								"line-cap": "round",
+							}}
+							paint={{
+								"line-color": "#ff69b4",
+								"line-width": 1,
+							}}
+						/>
+
+						<Layer
+							id="parcel-fill-layer"
+							source="parcel-source"
+							type="fill"
+							source-layer="manhattan_staten_island_parce-7ng65o"
+							paint={{
+								"fill-color": [
+									"case",
+									["==", ["id"], clickedFeatureId], // Condition for clicked feature
+									"#ff0000", // Color for clicked feature
+									["==", ["id"], hoveredFeatureId], // Condition for hovered feature
+									"#ff69b4", // Color for hovered feature
+									"#6F788A", // Default color
+								],
+								"fill-opacity": 0.7,
+							}}
+						/>
+					</Source>
+				</Map>
+				<button onClick={toggleLayer} className="map-layer-toggle-btn">
+					Toggle Layer
+				</button>
+			</div>
+		</section>
 	);
 }
