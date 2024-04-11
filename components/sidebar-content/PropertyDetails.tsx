@@ -75,23 +75,35 @@ const PropertyDetails = ({ pID }: Props) => {
 		<section className="property-details-container">
 			<div className="pd-title">
 				<span className="text-lg">
-					{featureData.address_line1}
-					{`, `}
-					{featureData.city}
-					{`, `}
-					{featureData.state}
-					{`, `}
-					{featureData.zip5}
+					{featureData ? (
+						<>
+							{featureData.address_line1}
+							{`, `}
+							{featureData.city}
+							{`, `}
+							{featureData.state}
+							{`, `}
+							{featureData.zip5}
+						</>
+					) : (
+						`No Property Selected`
+					)}
 				</span>
 				<span className="text-xs">
-					{"APN: "}
-					{featureData.apn}
-					{", Borough: "}
-					{featureData.borough_id}
-					{", Block: "}
-					{featureData.block_id}
-					{", Lot: "}
-					{featureData.lot_id}
+					{featureData ? (
+						<>
+							{"APN: "}
+							{featureData.apn}
+							{", Borough: "}
+							{featureData.borough_id}
+							{", Block: "}
+							{featureData.block_id}
+							{", Lot: "}
+							{featureData.lot_id}
+						</>
+					) : (
+						<div></div>
+					)}
 				</span>
 			</div>
 			<div className="pd-deals">No deals found for this property</div>
@@ -139,9 +151,13 @@ const PropertyDetails = ({ pID }: Props) => {
 				<div className="pd-info-btn">Debt</div>
 				<div className="pd-info-btn">Financials</div>
 			</div>
-			<div className="pd-cards">
-				<DetailCard title={`Building`} pdata={data} />
-			</div>
+			{featureData ? (
+				<div className="pd-cards">
+					<DetailCard title={`Building`} pdata={data} />
+				</div>
+			) : (
+				<></>
+			)}
 		</section>
 	);
 };
