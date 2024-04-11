@@ -3,34 +3,52 @@
 @tailwind utilities;
 
 :root {
-	--foreground-rgb: 0, 0, 0;
-	--background-start-rgb: 214, 219, 220;
-	--background-end-rgb: 255, 255, 255;
-
 	.mapboxgl-popup-content {
 		padding: 0;
 	}
+	/* This styles the scrollbar track */
+	::-webkit-scrollbar-track {
+		background: none; /* Track background */
+	}
+
+	/* This styles the scrollbar itself */
+	::-webkit-scrollbar {
+		width: 5px; /* Width of the scrollbar */
+		height: 5px; /* Height of the scrollbar for horizontal scrolls */
+	}
+
+	/* Handle */
+	::-webkit-scrollbar-thumb {
+		background: #888; /* Handle color */
+		border-radius: 5px;
+	}
+
+	/* Handle on hover */
+	::-webkit-scrollbar-thumb:hover {
+		background: #555; /* Handle color on hover */
+	}
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--foreground-rgb: 255, 255, 255;
-		--background-start-rgb: 0, 0, 0;
-		--background-end-rgb: 0, 0, 0;
-	}
+html,
+body {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	box-sizing: border-box;
+	width: 100vw;
+	height: 100vh;
+	max-height: 100vh;
+	min-width: 400px;
+	min-height: 650px;
+	background-color: black;
 }
 
 /* Root Styling */
 @layer base {
 	body {
-		@apply box-border;
-	}
-
-	.root-body {
-		@apply /* border-solid border-4 border-red-600 */
-		flex flex-col justify-center items-center
-		w-full h-screen
-		min-w-[400px] min-h-[600px];
+		@apply /* border-4 border-solid border-red-600 */
+		max-h-screen
+		relative;
 	}
 
 	.body-container {
@@ -41,9 +59,8 @@
 
 	.main-container {
 		@apply /* border-solid border-4 border-yellow-400 */
-    	flex flex-col-reverse justify-start items-center
-    	w-full h-full
-		lg:flex-row;
+    	flex justify-start items-center
+    	w-full h-full;
 	}
 }
 
@@ -54,55 +71,90 @@
     	flex justify-center items-center
     	w-full h-[90px];
 	}
-
 	.header {
 		@apply /* border-solid border-4 border-orange-500 */
-		bg-slate-800
-		text-white text-2xl
+    	flex flex-row justify-between items-center
+		bg-slate-900
+		text-white
 		py-2
 		px-4
-    	flex flex-row justify-between items-center
     	w-full h-full;
 	}
-}
-
-/* Sidebar Styling */
-@layer components {
-	.sidebar-container {
-		@apply /* border-solid border-4 border-blue-500 */
-    	flex justify-center items-center
-    	w-full h-full 
-		lg:w-[445px]
-		lg:shrink-0;
+	.header-logo-and-search-container {
+		@apply flex flex-row justify-center items-center
+		gap-2 w-fit h-full;
 	}
-
-	.sidebar {
-		@apply /* border-solid border-4 border-orange-500 */
-		bg-slate-700
-		text-white text-2xl
-    	flex flex-col justify-start items-center
-    	w-full h-full
-		gap-4
-		p-4;
+	.header-logo {
+		@apply flex justify-center items-center w-[30px] h-[30px]
+		sm:w-[35px]
+		sm:h-[35px]
+		md:w-[40px]
+		md:h-[40px];
+	}
+	.header-title {
+		@apply flex justify-center items-center 
+		h-full mr-4 text-xl
+		sm:text-2xl
+		md:text-3xl;
+	}
+	.header-search-container {
+		@apply flex justify-center items-center h-full;
+	}
+	.header-search {
+		@apply border-solid border-white border-[1px]
+		bg-slate-950/50
+		w-[200px] h-fit
+		rounded-sm
+		text-xs
+		p-2
+		sm:w-[250px]
+		md:w-[300px];
+	}
+	.header-user {
+		@apply flex justify-center items-center w-[30px] h-[30px];
 	}
 }
 
 /* Main Content Styling */
 @layer components {
-	.main-content {
-		@apply /* border-solid border-4 border-blue-500 */
-    	flex justify-center items-center
-    	w-full h-[45%]
-		lg:h-full;
-	}
-
-	.main {
+	.main-page {
 		@apply /* border-solid border-4 border-orange-500 */
-		bg-slate-500
-		text-white text-2xl
-    	flex flex-col justify-center items-center
-		gap-5
-    	w-full h-full;
+    	flex justify-center items-center
+    	w-full h-full
+		bg-slate-700
+		text-white;
+	}
+}
+
+/* MapBox Full Component Styling */
+@layer components {
+	.mapbox-component-container {
+		@apply /* border-solid border-white border-4 */
+		flex flex-col-reverse justify-center items-center 
+		relative
+		w-full h-full
+		sm:flex-row;
+	}
+	.mapbox-sidebar {
+		@apply /* border-solid border-orange-600 border-4 */
+		flex flex-col justify-center items-center
+		relative
+		w-full h-[50%]
+
+		sm:h-full
+		sm:w-[300px]
+		md:w-[350px]
+		lg:w-[400px]
+		xl:w-[450px]
+		2xl:w-[600px];
+	}
+	.map-container {
+		@apply /* border-solid border-green-600 border-4 */
+		flex justify-center items-center 
+		w-full h-[50%]
+		relative
+
+		sm:h-full;
 	}
 }
 
@@ -124,27 +176,120 @@
 	}
 }
 
-/* Property Card Styling */
+/* Sidebar Styling */
 @layer components {
-	.cards-container {
-		@apply flex flex-col justify-center items-center gap-2;
-	}
-
-	.property-card-container {
-		@apply flex flex-col justify-center items-center
+	.sidebar-container {
+		@apply /* border-solid border-4 border-blue-500 */
+		flex flex-col justify-center items-center
 		w-full h-full
-		rounded-lg
-		bg-white
-		text-black
+		relative
+		text-base
+		gap-1;
+	}
+	.sidebar-header {
+		@apply border-solid border-b-[1px] border-white/50
+		flex flex-row justify-start items-center
+		w-full h-fit
+		text-white/60
+		py-2;
+	}
+	.sidebar-header-btn {
+		@apply /* border-solid border-b-2 border-white */
+		flex flex-row justify-center items-center
+		w-[110px] h-fit
+		text-xs
+		p-1;
+	}
+	.sidebar-content {
+		@apply /* border-solid border-4 border-yellow-500 */
+		flex flex-col justify-center items-center
+		w-full h-full
+		overflow-y-auto
+		relative;
+	}
+	.sidebar-content-test {
+		@apply /* border-solid border-4 border-white */
+		absolute
+		top-0 left-0
+		overflow-hidden
+		w-full h-fit;
+	}
+}
+
+/* Property Details Styling */
+@layer components {
+	.property-details-container {
+		@apply /* border-solid border-4 border-red-600 */
+		flex flex-col justify-start items-center gap-2
+		w-full h-fit
+		relative
+		grow-0
 		p-2;
 	}
-	.property-card-title {
-		@apply flex justify-start items-center
-		bg-white
-		font-bold
-		text-lg;
+	.pd-title {
+		@apply flex flex-col justify-center items-start
+		w-full h-fit;
 	}
-	.property-card-info {
-		@apply text-sm font-light;
+	.pd-deals {
+		@apply shadow-[0px_2px_4px_-1px_rgba(255,255,255,0.7)]
+		w-full h-fit
+		rounded-sm
+		text-xs
+		p-1;
+	}
+	.pd-db-selector {
+		@apply /* border-solid border-[1px] border-white */
+		flex flex-row justify-start items-center
+		shadow-[0px_2px_4px_-1px_rgba(255,255,255,0.7)]
+		w-full h-fit
+		rounded-sm
+		text-sm
+		gap-4
+		p-1;
+	}
+	.pd-info-selector {
+		@apply /* border-solid border-[1px] border-white */
+		flex flex-row justify-start items-center
+		w-full h-fit
+		text-white/60;
+	}
+	.pd-info-btn {
+		@apply /* border-solid border-b-2 border-white */
+		flex flex-row justify-center items-center
+		w-fit h-fit
+		text-[.6rem]
+		py-1 px-2;
+	}
+	.pd-cards {
+		@apply /* border-solid border-2 border-red-600 */
+		flex flex-col justify-start items-center
+		relative
+		w-full h-fit;
+	}
+}
+
+/* Detail Card Styling */
+@layer components {
+	.detail-card-container {
+		@apply /* border-white border-dotted border-[1px] */
+		flex flex-col justify-center items-center
+		bg-white
+		text-black
+		w-full h-fit
+		p-2;
+	}
+	.dc-title {
+		@apply w-full h-fit
+		font-bold
+		text-base;
+	}
+	.dc-rows {
+		@apply w-full h-fit
+		text-xs;
+	}
+	.dc-row {
+		@apply flex flex-row justify-between items-center
+		border-solid border-b-[1px] border-l-slate-600/60
+		w-full h-fit;
 	}
 }

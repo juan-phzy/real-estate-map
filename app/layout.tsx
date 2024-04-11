@@ -19,18 +19,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${inter.className} root-body`}>
+			<body className={`${inter.className}`}>
 				<ApolloWrapper>
 					<section className="body-container">
 						<div className={`header-container`}>
 							<Header />
 						</div>
-						<div className={`main-container`}>
-							<div className="sidebar-container">
-								<Sidebar />
-							</div>
-							<div className="main-content">{children}</div>
-						</div>
+						<div className={`main-container`}>{children}</div>
 					</section>
 				</ApolloWrapper>
 			</body>
