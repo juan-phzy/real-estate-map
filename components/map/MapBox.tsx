@@ -1,8 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-
-import { useState, useRef } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState, useRef, Suspense } from "react";
 
 import Map, {
 	Marker,
@@ -17,19 +16,22 @@ import Map, {
 } from "react-map-gl";
 import { Visibility } from "mapbox-gl";
 import { MapLayerMouseEvent } from "react-map-gl";
-
 import "mapbox-gl/dist/mapbox-gl.css";
+
 import Sidebar from "../shared/Sidebar";
+import { TfiControlShuffle } from "react-icons/tfi";
+import Loading from "../Loading";
 
 export default function MapBox() {
 	//URL Functionality
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const pathname = usePathname();
 
 	const urlPID = searchParams.get("pID");
 	const urlFID = searchParams.get("fID");
 
-	//Parcel Functionality
+	//Parcel State Management
 	const [hoveredFeatureId, setHoveredFeatureId] = useState<
 		string | number | undefined | null
 	>(null);
@@ -41,8 +43,11 @@ export default function MapBox() {
 		urlPID ? urlPID : null
 	);
 
-	//Map Functionality
+	//Map State Management
 	const [vis, setVis] = useState<Visibility>("visible");
+	const [mapPosition, setMapPosition] = useState<[number, number, number]>([
+		40.717793, -73.995, 13,
+	]);
 	const mapRef = useRef<MapRef>(null);
 
 	//Utility Functions
@@ -51,10 +56,13 @@ export default function MapBox() {
 		if (feature && feature.layer.id === "parcel-fill-layer") {
 			setClickedFeatureId(feature.id);
 			setParcelID(feature.properties?.ID);
-			console.log(feature.properties?.ID);
+
 			router.push(`/?pID=${feature.properties?.ID}&fID=${feature.id}`, {
 				scroll: false,
 			});
+
+			console.log(feature.properties?.ID);
+			console.log(pathname);
 		} else {
 			setClickedFeatureId(null); // Reset when map is clicked outside any feature
 			setParcelID(null);

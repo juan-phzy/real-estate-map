@@ -1,5 +1,6 @@
 import PropertyDetails from "../sidebar-content/PropertyDetails";
-
+import { Suspense } from "react";
+import Loading from "../Loading";
 interface Props {
 	pID: string | null;
 }
@@ -15,9 +16,11 @@ const Sidebar = ({ pID }: Props) => {
 				</div>
 			</div>
 			<div className="sidebar-content">
-				<div className="sidebar-content-test">
-					<PropertyDetails pID={pID} />
-				</div>
+				<Suspense fallback={<Loading />}>
+					<div className="sidebar-content-test">
+						<PropertyDetails pID={pID} />
+					</div>
+				</Suspense>
 			</div>
 		</section>
 	);
