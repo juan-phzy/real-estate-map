@@ -16,12 +16,21 @@ import Map, {
 	FullscreenControl,
 	MapRef,
 } from "react-map-gl";
-import { Visibility } from "mapbox-gl";
 import { MapLayerMouseEvent } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 //----------------------------------------------------------------Component Import
 import Sidebar from "../shared/Sidebar";
+
+interface PopUpObject {
+	latitude: string;
+	longitude: string;
+	apn: string;
+	adr: string;
+	city: string;
+	state: string;
+	zip: string;
+}
 
 interface MapLocState {
 	lat: number;
@@ -41,10 +50,14 @@ export default function MapBox() {
 	const searchParams = useSearchParams();
 
 	const urlPID = searchParams.get("pID"); //-----------------------Extract URL Values
-	const urlFID = searchParams.get("fID");
 	const urlLat = searchParams.get("lat");
 	const urlLon = searchParams.get("lon");
 	const urlZoom = searchParams.get("zoom");
+	const urlApn = searchParams.get("apn");
+	const urlAdr = searchParams.get("adr");
+	const urlCity = searchParams.get("city");
+	const urlState = searchParams.get("state");
+	const urlZip = searchParams.get("zip");
 
 	const urlMapState: MapLocState | null = //-----------------------Create Map Location State from URL values
 		urlLat && urlLon && urlZoom
@@ -59,6 +72,23 @@ export default function MapBox() {
 		urlMapState ? urlMapState : initialMapState
 	);
 
+	const urlPopupState: PopUpObject | null = //-----------------------Create PopUp State from URL values
+		urlLat && urlLon && urlApn && urlAdr && urlCity && urlState && urlZip
+			? {
+					latitude: urlLat,
+					longitude: urlLon,
+					apn: urlApn,
+					adr: urlAdr,
+					city: urlCity,
+					state: urlState,
+					zip: urlZip,
+			  }
+			: null;
+
+	const [popupInfo, setPopupInfo] = useState<PopUpObject | null>( //Set PopUp State
+		urlPopupState ? urlPopupState : null
+	);
+
 	const mapRef = useRef<MapRef>(null); //---------------------------Set Map Reference
 
 	//----------------------------------------------------------------Controls Parcel Hover State
@@ -66,17 +96,10 @@ export default function MapBox() {
 		string | number | undefined | null
 	>(null);
 
-	//----------------------------------------------------------------Controls Parcel Click State
-	const [clickedFeatureId, setClickedFeatureId] = useState<
-		string | number | undefined | null
-	>(urlFID ? parseFloat(urlFID) : null);
-
 	//----------------------------------------------------------------Sets Parcel ID State
 	const [parcelID, setParcelID] = useState<string | null>(
 		urlPID ? urlPID : null
 	);
-
-	const [vis, setVis] = useState<Visibility>("visible");
 
 	//----------------------------------------------------------------Map Parcel Click Handler
 	const handleClick = (event: MapLayerMouseEvent) => {
@@ -85,19 +108,34 @@ export default function MapBox() {
 		//--------------------------------------------------------------Validates Clicked Feature
 		if (feature && feature.layer.id === "parcel-fill-layer") {
 			//------------------------------------------------------------Set Clicked Featured ID & Parcel ID State
-			setClickedFeatureId(feature.id);
 			setParcelID(feature.properties?.ID);
+			console.log(feature);
+
+			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
+			setPopupInfo({
+				latitude: feature.properties?.LATITUDE,
+				longitude: feature.properties?.LONGITUDE,
+				apn: feature.properties?.APN,
+				adr: feature.properties?.ADDRLINE1,
+				city: feature.properties?.CITY,
+				state: feature.properties?.STATE,
+				zip: feature.properties?.ZIP5,
+			});
+			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 
 			//------------------------------------------------------------Stores Parcel ID, Feature ID & Map Position in URL
-			router.push(
-				`/?pID=${feature.properties?.ID}&fID=${feature.id}&lat=${
-					feature.properties?.LATITUDE
-				}&lon=${feature.properties?.LONGITUDE}&zoom=${14.5}`,
-				{ scroll: false }
-			);
+			if (popupInfo) {
+				router.push(
+					`/?pID=${parcelID}&lat=${popupInfo.latitude}&lon=${
+						popupInfo.longitude
+					}&zoom=${15}&apn=${popupInfo.apn}&adr=${popupInfo.adr}&city=${
+						popupInfo.city
+					}&state=${popupInfo.state}&zip=${popupInfo.zip}`,
+					{ scroll: false }
+				);
+			}
 		} else {
 			//-----------------------------------------------------Resets all states when user clicks out of parcel
-			setClickedFeatureId(null);
 			setParcelID(null);
 			setMapPosition({
 				lat: 40.717793,
@@ -105,6 +143,10 @@ export default function MapBox() {
 				zoom: 13,
 			});
 			router.replace("/", { scroll: false });
+
+			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
+			setPopupInfo(null);
+			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 		}
 	};
 
@@ -146,6 +188,39 @@ export default function MapBox() {
 					<NavigationControl position="top-right" />
 					<FullscreenControl position="top-right" />
 
+					{
+						//-------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
+						popupInfo && (
+							<Popup
+								className="text-black"
+								latitude={parseFloat(popupInfo.latitude)}
+								longitude={parseFloat(popupInfo.longitude)}
+								closeButton={true}
+								closeOnClick={false}
+								onClose={() => setPopupInfo(null)}
+								anchor="top"
+							>
+								<div className="w-full h-fit flex flex-col justify-center items-center text-black p-2">
+									<div className="w-full">
+										<span className="font-bold">APN: </span>
+										{popupInfo.apn}
+									</div>
+									<div className="w-full">
+										<span className="font-bold">Address: </span>
+										{popupInfo.adr}
+										{", "}
+										{popupInfo.city}
+										{", "}
+										{popupInfo.state}
+										{", "}
+										{popupInfo.zip}
+									</div>
+								</div>
+							</Popup>
+						)
+						//-------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
+					}
+
 					<Source
 						id="parcel-source"
 						type="vector"
@@ -176,7 +251,7 @@ export default function MapBox() {
 							paint={{
 								"fill-color": [
 									"case",
-									["==", ["id"], clickedFeatureId], // Condition for clicked feature
+									["==", ["get", "ID"], parcelID], // Condition for clicked feature
 									"#00fff6", // Color for clicked feature
 									["==", ["id"], hoveredFeatureId], // Condition for hovered feature
 									"#ff69b4", // Color for hovered feature

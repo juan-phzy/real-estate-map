@@ -3,9 +3,16 @@
 @tailwind utilities;
 
 :root {
-	.mapboxgl-popup-content {
-		padding: 0;
+	.mapboxgl-popup-close-button {
+		width: 30px;
+		height: 30px;
+		font-size: 25px;
 	}
+	.mapboxgl-popup-close-button:hover {
+		background-color: red;
+		color: white;
+	}
+
 	/* This styles the scrollbar track */
 	::-webkit-scrollbar-track {
 		background: none; /* Track background */
