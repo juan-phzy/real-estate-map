@@ -109,8 +109,6 @@ export default function MapBox() {
 		if (feature && feature.layer.id === "parcel-fill-layer") {
 			//------------------------------------------------------------Set Clicked Featured ID & Parcel ID State
 			setParcelID(feature.properties?.ID);
-			console.log(feature);
-
 			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 			setPopupInfo({
 				latitude: feature.properties?.LATITUDE,
@@ -123,17 +121,18 @@ export default function MapBox() {
 			});
 			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 
-			//------------------------------------------------------------Stores Parcel ID, Feature ID & Map Position in URL
-			if (popupInfo) {
-				router.push(
-					`/?pID=${parcelID}&lat=${popupInfo.latitude}&lon=${
-						popupInfo.longitude
-					}&zoom=${15}&apn=${popupInfo.apn}&adr=${popupInfo.adr}&city=${
-						popupInfo.city
-					}&state=${popupInfo.state}&zip=${popupInfo.zip}`,
-					{ scroll: false }
-				);
-			}
+			//------------------------------------------------------------Stores Parcel ID, Map Position, & PopupInfo in URL
+
+			router.push(
+				`/?pID=${parcelID}&lat=${feature.properties?.LATITUDE}&lon=${
+					feature.properties?.LONGITUDE
+				}&zoom=${15}&apn=${feature.properties?.APN}&adr=${
+					feature.properties?.ADDRLINE1
+				}&city=${feature.properties?.CITY}&state=${
+					feature.properties?.STATE
+				}&zip=${feature.properties?.ZIP5}`,
+				{ scroll: false }
+			);
 		} else {
 			//-----------------------------------------------------Resets all states when user clicks out of parcel
 			setParcelID(null);
@@ -192,7 +191,6 @@ export default function MapBox() {
 						//-------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 						popupInfo && (
 							<Popup
-								className="text-black"
 								latitude={parseFloat(popupInfo.latitude)}
 								longitude={parseFloat(popupInfo.longitude)}
 								closeButton={true}
