@@ -262,7 +262,8 @@ body {
 	}
 	.pd-cards {
 		@apply /* border-solid border-2 border-red-600 */
-		flex flex-col justify-start items-center
+		flex flex-col justify-center items-center
+    gap-4
 		relative
 		w-full h-fit;
 	}

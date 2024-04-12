@@ -1,8 +1,10 @@
 "use client";
 
+//-----------------------------------------------------------------Next & React Imports
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef } from "react";
 
+//-----------------------------------------------------------------MapBox Imports
 import Map, {
 	Marker,
 	Popup,
@@ -18,6 +20,7 @@ import { Visibility } from "mapbox-gl";
 import { MapLayerMouseEvent } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
+//----------------------------------------------------------------Component Import
 import Sidebar from "../shared/Sidebar";
 
 interface MapLocState {
@@ -79,28 +82,22 @@ export default function MapBox() {
 	const handleClick = (event: MapLayerMouseEvent) => {
 		const feature = event.features && event.features[0]; //---------Extracts Map Feature from Event
 
+		//--------------------------------------------------------------Validates Clicked Feature
 		if (feature && feature.layer.id === "parcel-fill-layer") {
+			//------------------------------------------------------------Set Clicked Featured ID & Parcel ID State
 			setClickedFeatureId(feature.id);
 			setParcelID(feature.properties?.ID);
 
+			//------------------------------------------------------------Stores Parcel ID, Feature ID & Map Position in URL
 			router.push(
 				`/?pID=${feature.properties?.ID}&fID=${feature.id}&lat=${
 					feature.properties?.LATITUDE
 				}&lon=${feature.properties?.LONGITUDE}&zoom=${14.5}`,
 				{ scroll: false }
 			);
-			/*
-			console.log("Event feature property ID: ", feature.properties?.ID);
-			console.log("Event lon, lat: ", event.lngLat);
-			console.log("Event feature: ", feature);
-			console.log("Event feature properties: ", feature.properties);
-			console.log(
-				"Event feature properties lat: ",
-				feature.properties?.LATITUDE
-			);
-			*/
 		} else {
-			setClickedFeatureId(null); // Reset when map is clicked outside any feature
+			//-----------------------------------------------------Resets all states when user clicks out of parcel
+			setClickedFeatureId(null);
 			setParcelID(null);
 			setMapPosition({
 				lat: 40.717793,
@@ -111,13 +108,15 @@ export default function MapBox() {
 		}
 	};
 
-	const handleHover = (event: any) => {
-		const feature = event.features[0];
+	//----------------------------------------------------------Sets Hovered Feature ID to highlight Parcel
+	const handleHover = (event: MapLayerMouseEvent) => {
+		const feature = event.features ? event.features[0] : null;
 		if (feature && feature.layer.id === "parcel-fill-layer") {
 			setHoveredFeatureId(feature.id);
 		}
 	};
 
+	//----------------------------------------------------------Resets Hovered Feature ID
 	const handleMouseLeave = () => {
 		setHoveredFeatureId(null);
 	};

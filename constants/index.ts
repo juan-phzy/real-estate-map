@@ -123,27 +123,27 @@ export const hobokenRestaurants: FeatureCollection = {
 };
 
 export interface ReonomyProperty {
-	year_built: number | null;
-	year_renovated: number | null;
-	floors: number | null;
-	sum_buildings_nbr: number | null;
-	existing_floor_area_ratio: number | null;
-	commercial_units: number | null;
-	residential_units: number | null;
-	total_units: number | null;
-	building_area: number | null;
-	max_floor_plate: number | null;
+	year_built: string | null;
+	year_renovated: string | null;
+	floors: string | null;
+	sum_buildings_nbr: string | null;
+	existing_floor_area_ratio: string | null;
+	commercial_units: string | null;
+	residential_units: string | null;
+	total_units: string | null;
+	building_area: string | null;
+	max_floor_plate: string | null;
 	building_class: string | null;
-	frontage: number | null;
-	depth: number | null;
+	frontage: string | null;
+	depth: string | null;
 	asset_type: string | null;
-	lot_size_sqft: number | null;
-	lot_size_acres: number | null;
+	lot_size_sqft: string | null;
+	lot_size_acres: string | null;
 	zoning: string | null;
-	lot_size_depth_feet: number | null;
-	lot_size_frontage_feet: number | null;
+	lot_size_depth_feet: string | null;
+	lot_size_frontage_feet: string | null;
 	census_tract: string | null;
-	opp_zone: boolean | null;
+	opp_zone: string | null;
 	msa_name: string | null;
 	fips_county: string | null;
 	municipality: string | null;
@@ -153,7 +153,7 @@ export interface ReonomyProperty {
 	zoning_district_1: string | null;
 	zoning_district_2: string | null;
 	special_purpose_district: string | null;
-	split_boundary: boolean | null;
+	split_boundary: string | null;
 	sanborn_map_number: string | null;
 	address_line1: string | null;
 	city: string | null;
@@ -163,8 +163,8 @@ export interface ReonomyProperty {
 	borough_id: string | null;
 	block_id: string | null;
 	lot_id: string | null;
-	lat: number | null;
-	lon: number | null;
+	lat: string | null;
+	lon: string | null;
 }
 
 export interface ReonomyProperties {

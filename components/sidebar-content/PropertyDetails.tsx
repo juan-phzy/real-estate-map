@@ -11,12 +11,7 @@ interface Props {
 }
 
 const PropertyDetails = ({ pID }: Props) => {
-	const [selectedOption, setSelectedOption] = useState("Option 1");
-
-	const handleChange = (event: any) => {
-		setSelectedOption(event.target.value);
-	};
-
+	//------------------------------------------------------------------------------GraphQL Query
 	const GET_PROPERTY_INFO = gql`
 		query {
 			reonomyProperties(
@@ -70,10 +65,15 @@ const PropertyDetails = ({ pID }: Props) => {
 			}
 		}
 	`;
+
+	//------------------------------------------------------------------------------Stores Query Data
 	const { data } = useSuspenseQuery<PropertyData>(GET_PROPERTY_INFO);
 	const featureData = data.reonomyProperties.items[0];
 
+	//---------------------------------------------------------Converts Property Data Object to array of Keys and Values
 	const propertyDataArray = featureData ? Object.entries(featureData) : null;
+
+	//-----------------------------------------------------------------------------Separates Data by Topic
 	const buildingData = propertyDataArray?.slice(1, 14);
 	const lotData = propertyDataArray?.slice(14, 22);
 	const locData = propertyDataArray?.slice(22, 28);
