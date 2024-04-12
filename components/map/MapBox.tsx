@@ -107,9 +107,8 @@ export default function MapBox() {
 
 		//--------------------------------------------------------------Validates Clicked Feature
 		if (feature && feature.layer.id === "parcel-fill-layer") {
-			//------------------------------------------------------------Set Clicked Featured ID & Parcel ID State
+			//------------------------------------------------------------Set Parcel ID and PopupInfo State
 			setParcelID(feature.properties?.ID);
-			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 			setPopupInfo({
 				latitude: feature.properties?.LATITUDE,
 				longitude: feature.properties?.LONGITUDE,
@@ -119,10 +118,8 @@ export default function MapBox() {
 				state: feature.properties?.STATE,
 				zip: feature.properties?.ZIP5,
 			});
-			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 
 			//------------------------------------------------------------Stores Parcel ID, Map Position, & PopupInfo in URL
-
 			router.push(
 				`/?pID=${parcelID}&lat=${feature.properties?.LATITUDE}&lon=${
 					feature.properties?.LONGITUDE
@@ -135,6 +132,7 @@ export default function MapBox() {
 			);
 		} else {
 			//-----------------------------------------------------Resets all states when user clicks out of parcel
+			setPopupInfo(null);
 			setParcelID(null);
 			setMapPosition({
 				lat: 40.717793,
@@ -142,10 +140,6 @@ export default function MapBox() {
 				zoom: 13,
 			});
 			router.replace("/", { scroll: false });
-
-			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
-			setPopupInfo(null);
-			//--------------------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 		}
 	};
 
@@ -188,7 +182,7 @@ export default function MapBox() {
 					<FullscreenControl position="top-right" />
 
 					{
-						//-------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
+						//------------------------------------------------------------Clicked Parcel Pop Up Component
 						popupInfo && (
 							<Popup
 								latitude={parseFloat(popupInfo.latitude)}
@@ -216,7 +210,6 @@ export default function MapBox() {
 								</div>
 							</Popup>
 						)
-						//-------------------IN PROGRESS IN PROGRESS IN PROGRESSIN PROGRESS IN PROGRESS IN PROGRESS
 					}
 
 					<Source
