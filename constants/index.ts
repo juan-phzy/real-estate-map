@@ -163,6 +163,8 @@ export interface ReonomyProperty {
 	borough_id: string | null;
 	block_id: string | null;
 	lot_id: string | null;
+	lat: number | null;
+	lon: number | null;
 }
 
 export interface ReonomyProperties {

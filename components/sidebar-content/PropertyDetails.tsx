@@ -64,6 +64,8 @@ const PropertyDetails = ({ pID }: Props) => {
 					borough_id
 					block_id
 					lot_id
+					lat
+					lon
 				}
 			}
 		}
