@@ -166,24 +166,6 @@ body {
 	}
 }
 
-/* MapBox PopUp Styling */
-@layer components {
-	.popupTitle {
-		@apply bg-blue-900
-		p-2
-		text-lg
-		text-white;
-	}
-	.popupInfo {
-		@apply bg-white
-		p-2
-		text-black;
-	}
-	.popupLabel {
-		@apply font-bold text-black;
-	}
-}
-
 /* Sidebar Styling */
 @layer components {
 	.sidebar-container {
