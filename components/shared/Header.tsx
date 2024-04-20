@@ -2,8 +2,7 @@
 
 import { GiGlobe } from "react-icons/gi";
 import { FaCircleUser } from "react-icons/fa6";
-
-import { useState } from "react";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 const Header = () => {
 	return (
@@ -14,7 +13,27 @@ const Header = () => {
 				</div>
 				<div className="header-title">Lens</div>
 				<div className="header-search-container">
-					<input className="header-search" placeholder="Search" />
+					{/* <input className="header-search" placeholder="Search" /> */}
+					<GooglePlacesAutocomplete
+						selectProps={{
+							classNamePrefix: "autocomplete",
+							styles: {
+								input: (provided) => ({
+									...provided,
+									color: "blue",
+								}),
+								option: (provided) => ({
+									...provided,
+									color: "blue",
+								}),
+								singleValue: (provided) => ({
+									...provided,
+									color: "blue",
+								}),
+							},
+						}}
+						apiKey={process.env.GOOGLE_API_KEY}
+					/>
 				</div>
 			</div>
 			<div className="header-user">

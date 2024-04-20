@@ -121,13 +121,15 @@ export default function MapBox() {
 
 			//------------------------------------------------------------Stores Parcel ID, Map Position, & PopupInfo in URL
 			router.push(
-				`/?pID=${parcelID}&lat=${feature.properties?.LATITUDE}&lon=${
-					feature.properties?.LONGITUDE
-				}&zoom=${15}&apn=${feature.properties?.APN}&adr=${
-					feature.properties?.ADDRLINE1
-				}&city=${feature.properties?.CITY}&state=${
-					feature.properties?.STATE
-				}&zip=${feature.properties?.ZIP5}`,
+				`/?pID=${feature.properties?.ID}&lat=${
+					feature.properties?.LATITUDE
+				}&lon=${feature.properties?.LONGITUDE}&zoom=${15}&apn=${
+					feature.properties?.APN
+				}&adr=${feature.properties?.ADDRLINE1}&city=${
+					feature.properties?.CITY
+				}&state=${feature.properties?.STATE}&zip=${
+					feature.properties?.ZIP5
+				}`,
 				{ scroll: false }
 			);
 		} else {

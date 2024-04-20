@@ -35,6 +35,25 @@
 	::-webkit-scrollbar-thumb:hover {
 		background: #555; /* Handle color on hover */
 	}
+
+	/* Default width */
+	.css-b62m3t-container {
+		width: 350px;
+	}
+
+	/* Medium screens (tablets) */
+	@media (max-width: 768px) {
+		.css-b62m3t-container {
+			width: 250px;
+		}
+	}
+
+	/* Small screens (phones) */
+	@media (max-width: 640px) {
+		.css-b62m3t-container {
+			width: 200px;
+		}
+	}
 }
 
 html,
