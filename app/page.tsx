@@ -1,17 +1,12 @@
-"use client";
-
-import Loading from "@/components/Loading";
 import MapBox from "@/components/map/MapBox";
-import { Suspense } from "react";
 
-const x = 2;
+import { MapSearchParams } from "@/constants/index";
 
-const page = () => {
+const page = ({searchParams}: {searchParams: MapSearchParams}) => {
+	console.log("Search Params: ", searchParams);
 	return (
 		<section className="main-page">
-			<Suspense fallback={<Loading />}>
-				<MapBox />
-			</Suspense>
+			<MapBox searchParams={searchParams} />
 		</section>
 	);
 };

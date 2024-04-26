@@ -1,8 +1,11 @@
 "use client";
 
+//-----------------------------------------------------------------Constants & Interfaces Imports
+import { MapSearchParams, PopUpObject, MapLocState } from "@/constants/index";
+
 //-----------------------------------------------------------------Next & React Imports
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 //-----------------------------------------------------------------MapBox Imports
 import Map, {
@@ -16,90 +19,57 @@ import Map, {
 	FullscreenControl,
 	MapRef,
 } from "react-map-gl";
-import { MapLayerMouseEvent } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { MapLayerMouseEvent } from "react-map-gl";
 
 //----------------------------------------------------------------Component Import
 import Sidebar from "../shared/Sidebar";
 
-interface PopUpObject {
-	latitude: string;
-	longitude: string;
-	apn: string;
-	adr: string;
-	city: string;
-	state: string;
-	zip: string;
-}
-
-interface MapLocState {
-	lat: number;
-	lon: number;
-	zoom: number;
-}
-
+//----------------------------------------------------------------Default Map Location
 const initialMapState: MapLocState = {
 	lat: 40.717793,
 	lon: -73.995,
 	zoom: 13,
 };
 
-export default function MapBox() {
+
+export default function MapBox({searchParams}: {searchParams: MapSearchParams}) {
 	//
+	const { pID, lat, lon, zoom, apn, adr, city, state, zip } = searchParams;
+
 	const router = useRouter(); //-----------------------------------URL Functionality
-	const searchParams = useSearchParams();
 
-	const urlPID = searchParams.get("pID"); //-----------------------Extract URL Values
-	const urlLat = searchParams.get("lat");
-	const urlLon = searchParams.get("lon");
-	const urlZoom = searchParams.get("zoom");
-	const urlApn = searchParams.get("apn");
-	const urlAdr = searchParams.get("adr");
-	const urlCity = searchParams.get("city");
-	const urlState = searchParams.get("state");
-	const urlZip = searchParams.get("zip");
-
-	const urlMapState: MapLocState | null = //-----------------------Create Map Location State from URL values
-		urlLat && urlLon && urlZoom
-			? {
-					lat: parseFloat(urlLat),
-					lon: parseFloat(urlLon),
-					zoom: parseFloat(urlZoom),
-			  }
-			: null;
+	//---------------------------------------------------------------Create Map Location State from URL values
+	const urlMapState: MapLocState | null = (lat && lon && zoom) ? 
+	{lat: parseFloat(lat), lon: parseFloat(lon), zoom: parseFloat(zoom)} : null;
 
 	const [mapPosition, setMapPosition] = useState<MapLocState>( //---Set Map Location State
 		urlMapState ? urlMapState : initialMapState
 	);
 
 	const urlPopupState: PopUpObject | null = //-----------------------Create PopUp State from URL values
-		urlLat && urlLon && urlApn && urlAdr && urlCity && urlState && urlZip
+		lat && lon && apn && adr && city && state && zip
 			? {
-					latitude: urlLat,
-					longitude: urlLon,
-					apn: urlApn,
-					adr: urlAdr,
-					city: urlCity,
-					state: urlState,
-					zip: urlZip,
+					latitude: lat,
+					longitude: lon,
+					apn: apn,
+					adr: adr,
+					city: city,
+					state: state,
+					zip: zip,
 			  }
 			: null;
 
-	const [popupInfo, setPopupInfo] = useState<PopUpObject | null>( //Set PopUp State
-		urlPopupState ? urlPopupState : null
-	);
+	//-----------------------------------------------------------------Set PopUp State
+	const [popupInfo, setPopupInfo] = useState<PopUpObject | null>(urlPopupState ? urlPopupState : null);
 
 	const mapRef = useRef<MapRef>(null); //---------------------------Set Map Reference
 
 	//----------------------------------------------------------------Controls Parcel Hover State
-	const [hoveredFeatureId, setHoveredFeatureId] = useState<
-		string | number | undefined | null
-	>(null);
+	const [hoveredFeatureId, setHoveredFeatureId] = useState<string | number | undefined | null>(null);
 
 	//----------------------------------------------------------------Sets Parcel ID State
-	const [parcelID, setParcelID] = useState<string | null>(
-		urlPID ? urlPID : null
-	);
+	const [parcelID, setParcelID] = useState<string | null>(pID ? pID : null);
 
 	//----------------------------------------------------------------Map Parcel Click Handler
 	const handleClick = (event: MapLayerMouseEvent) => {
@@ -157,6 +127,43 @@ export default function MapBox() {
 	const handleMouseLeave = () => {
 		setHoveredFeatureId(null);
 	};
+
+	//----------------------------------------------------------Sets Parcel ID and PopupInfo State from URL changes
+	useEffect(() => {
+		if (searchParams.pID && searchParams.lat && searchParams.lon && searchParams.zoom && searchParams.apn && searchParams.adr && searchParams.city && searchParams.state && searchParams.zip) {
+			setParcelID(searchParams.pID);
+			setPopupInfo({
+				latitude: searchParams.lat,
+				longitude: searchParams.lon,
+				apn: searchParams.apn,
+				adr: searchParams.adr,
+				city: searchParams.city,
+				state: searchParams.state,
+				zip: searchParams.zip,
+			});
+			
+			
+			const newLat = parseFloat(searchParams.lat);
+			const newLon = parseFloat(searchParams.lon);
+			const newZoom = searchParams.zoom ? parseFloat(searchParams.zoom) : mapPosition.zoom;
+
+			setMapPosition({
+				lat: newLat,
+				lon: newLon,
+				zoom: newZoom
+			});
+
+			if (mapRef.current) {
+				mapRef.current.flyTo({
+					center: [newLon, newLat],
+					zoom: newZoom
+				});
+			}
+			
+		}
+	
+	}, [searchParams, mapPosition.zoom])
+	
 
 	return (
 		<section className="mapbox-component-container">

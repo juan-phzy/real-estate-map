@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/shared/Header";
-import Sidebar from "@/components/shared/Sidebar";
 import { ApolloWrapper } from "@/lib/apollo-wrapper";
 
 const inter = Inter({ subsets: ["latin"] });
