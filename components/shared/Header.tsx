@@ -4,8 +4,7 @@ import { GiGlobe } from "react-icons/gi";
 import { FaCircleUser } from "react-icons/fa6";
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
-import { gql } from "@apollo/client";
-import { useSuspenseQuery } from "@apollo/client";
+import { gql, useSuspenseQuery } from "@apollo/client";
 import { useRouter } from "next/navigation";
 
 interface ParcelByLocation {
@@ -46,7 +45,7 @@ const Header = () => {
     };
 
     useEffect(() => {
-        if (window.google && window.google.maps) {
+        if (window?.google?.maps) {
             initializeAutocomplete();
         }
     }, []);
@@ -99,8 +98,7 @@ const Header = () => {
 	}, [data, router]);
 
 
-	// console.log("\nAddress: ",address);
-	// console.log("\nLatitude: ",location.lat, " Longitude: ",location.lon);
+	
 	return (
 		<>
             <Script

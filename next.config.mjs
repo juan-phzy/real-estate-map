@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	images: {
+		remotePatterns: [
+		  {
+			protocol: 'https',
+			hostname: 'maps.googleapis.com',
+		  },
+		],
+	},
 	typescript: {
 		// !! WARN !!
 		// Dangerously allow production builds to successfully complete even if

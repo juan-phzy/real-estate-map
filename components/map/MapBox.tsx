@@ -24,6 +24,7 @@ import { MapLayerMouseEvent } from "react-map-gl";
 
 //----------------------------------------------------------------Component Import
 import Sidebar from "../shared/Sidebar";
+import Image from "next/image";
 
 //----------------------------------------------------------------Default Map Location
 const initialMapState: MapLocState = {
@@ -163,7 +164,7 @@ export default function MapBox({searchParams}: {searchParams: MapSearchParams}) 
 		}
 	
 	}, [searchParams, mapPosition.zoom])
-	
+
 
 	return (
 		<section className="mapbox-component-container">
@@ -199,22 +200,23 @@ export default function MapBox({searchParams}: {searchParams: MapSearchParams}) 
 								closeButton={true}
 								closeOnClick={false}
 								onClose={() => setPopupInfo(null)}
-								anchor="top"
+								anchor="right"
 							>
 								<div className="w-full h-fit flex flex-col justify-center items-center text-black p-2">
+									<div className="w-[200px] h-[200px] relative">
+										<Image
+											className="object-contain"
+											src={`https://maps.googleapis.com/maps/api/streetview?size=200x200&source=outdoor&pitch=10&fov=110&location=${adr},${city},${state}&key=${process.env.GOOGLE_API_KEY}`}
+											alt="Parcel Street View"
+											fill />
+									</div>
 									<div className="w-full">
 										<span className="font-bold">APN: </span>
 										{popupInfo.apn}
 									</div>
 									<div className="w-full">
 										<span className="font-bold">Address: </span>
-										{popupInfo.adr}
-										{", "}
-										{popupInfo.city}
-										{", "}
-										{popupInfo.state}
-										{", "}
-										{popupInfo.zip}
+										{`${popupInfo.adr}, ${popupInfo.city}, ${popupInfo.state}, ${popupInfo.zip}`}
 									</div>
 								</div>
 							</Popup>
