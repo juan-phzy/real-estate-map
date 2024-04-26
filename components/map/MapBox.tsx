@@ -35,7 +35,7 @@ const initialMapState: MapLocState = {
 
 
 export default function MapBox({searchParams}: {searchParams: MapSearchParams}) {
-	//
+	//---------------------------------------------------------------URL Search Parameters
 	const { pID, lat, lon, zoom, apn, adr, city, state, zip } = searchParams;
 
 	const router = useRouter(); //-----------------------------------URL Functionality
