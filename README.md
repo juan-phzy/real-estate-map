@@ -60,3 +60,9 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 Reminder that you will need your own Google API Key and MapBox Token.
+
+## Deploy This Project
+
+Clone this project into your own GitHub repository. Make an account with Vercel and link your GitHub.
+Within Vercel you should see all your repositories. Choose this one and follow the instructions
+to deploy the live site. Add environment variables if needed.
