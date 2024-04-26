@@ -172,8 +172,8 @@ body {
 		sm:w-[300px]
 		md:w-[350px]
 		lg:w-[400px]
-		xl:w-[450px]
-		2xl:w-[600px];
+		xl:w-[650px]
+		2xl:w-[700px];
 	}
 	.map-container {
 		@apply /* border-solid border-green-600 border-4 */
@@ -276,6 +276,9 @@ body {
 		relative
 		w-full h-fit;
 	}
+	.border-underline {
+		@apply border-solid border-b-2 border-white text-white;
+	}
 }
 
 /* Detail Card Styling */
@@ -302,4 +305,73 @@ body {
 		border-solid border-b-[1px] border-l-slate-600/60
 		w-full h-fit;
 	}
+}
+
+/* Sales Table */
+@layer components {
+	.sales-table-container {
+		@apply 
+		/* border-dotted border-2 border-green-600 */
+		flex flex-col justify-center items-center
+		w-full h-fit
+		relative
+		text-[.6rem]
+		overflow-x-auto
+		p-2;
+	}
+	.st-table {
+		@apply 
+		/* border-dotted border-[1px] border-black */
+		bg-white text-black
+		w-full h-fit
+		relative
+		rounded-lg
+		overflow-hidden;
+	}
+	.st-head {
+		@apply 
+		/* border-solid border-[1px] border-purple-600 */
+		w-full h-fit;
+	}
+	.st-row, .st-row-head {
+		@apply 
+		/* border-solid border-b-2 border-gray-400		 */
+		w-full h-fit;
+	}
+	.st-header-cell {
+		@apply 
+		border-solid border-r-[2px] border-gray-600/20
+		w-fit h-fit
+		px-2 py-3;
+	}
+	.st-header-cell:last-child {
+		@apply border-none;
+	}
+	.st
+	.st-body {
+		@apply 
+		/* border-solid border-[1px] border-yellow-400 */
+		w-full h-fit;
+	}
+	.st-col-cell {
+		@apply 
+		border-solid border-r-[2px] border-gray-600/20
+		w-fit h-fit
+		mt-auto mb-auto
+		text-[.45rem]
+		p-2;
+	}
+	.st-col-cell:last-child {
+		@apply border-none;
+	}
+	.st-row-head {
+		@apply 
+		border-solid border-b-2 border-gray-600/20;
+	
+	}
+	.st-row {
+		@apply border-solid border-t-[2px] border-gray-600/20
+		hover:bg-gray-200;
+	}
+
 }

@@ -4,23 +4,21 @@
 import { MapSearchParams, PopUpObject, MapLocState } from "@/constants/index";
 
 //-----------------------------------------------------------------Next & React Imports
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 //-----------------------------------------------------------------MapBox Imports
 import Map, {
-	Marker,
 	Popup,
 	Source,
 	Layer,
-	CircleLayer,
 	NavigationControl,
 	GeolocateControl,
 	FullscreenControl,
 	MapRef,
+	MapLayerMouseEvent
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { MapLayerMouseEvent } from "react-map-gl";
 
 //----------------------------------------------------------------Component Import
 import Sidebar from "../shared/Sidebar";
@@ -34,7 +32,7 @@ const initialMapState: MapLocState = {
 };
 
 
-export default function MapBox({searchParams}: {searchParams: MapSearchParams}) {
+export default function MapBox({searchParams}: {readonly searchParams: MapSearchParams}) {
 	//---------------------------------------------------------------URL Search Parameters
 	const { pID, lat, lon, zoom, apn, adr, city, state, zip } = searchParams;
 
@@ -208,6 +206,7 @@ export default function MapBox({searchParams}: {searchParams: MapSearchParams}) 
 											className="object-contain"
 											src={`https://maps.googleapis.com/maps/api/streetview?size=200x200&source=outdoor&pitch=10&fov=110&location=${adr},${city},${state}&key=${process.env.GOOGLE_API_KEY}`}
 											alt="Parcel Street View"
+											sizes="200px"
 											fill />
 									</div>
 									<div className="w-full">

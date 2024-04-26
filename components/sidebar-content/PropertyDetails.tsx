@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { gql } from "@apollo/client";
-import { useSuspenseQuery } from "@apollo/client";
-import { PropertyData } from "@/constants";
+import { gql, useSuspenseQuery } from "@apollo/client";
 import DetailCard from "../cards/DetailCard";
+import { Building, Lot, Zoning, Location, PropertyData, SalesData } from "@/constants";
+import { useState } from "react";
+import SalesTable from "../SalesTable";
 
 interface Props {
 	pID: string | null;
 }
 
 const PropertyDetails = ({ pID }: Props) => {
+	const [activeTab, setActiveTab] = useState<1|2|3|4|5>(1);
 	//------------------------------------------------------------------------------GraphQL Query
 	const GET_PROPERTY_INFO = gql`
 		query {
@@ -66,9 +67,37 @@ const PropertyDetails = ({ pID }: Props) => {
 		}
 	`;
 
+	const GET_SALES_INFO = gql`
+		query {
+			reonomyProperties(filter: {parcel_id: {eq: "${pID}"}}) {
+			items {
+				reonomyPropertySale {
+				items {
+					reonomySaleBuyerFormatted(first: 1) {
+					items {
+						name
+					}
+					}
+					reonomySaleSellerFormatted(first: 1) {
+					items {
+						name
+					}
+					}
+					sale_amount
+					sale_date
+				}
+				}
+			}
+			}
+		}
+	`;
+
 	//------------------------------------------------------------------------------Stores Query Data
-	const { data } = useSuspenseQuery<PropertyData>(GET_PROPERTY_INFO);
-	const featureData = data.reonomyProperties.items[0];
+	const { data:propertyData } = useSuspenseQuery<PropertyData>(GET_PROPERTY_INFO);
+	const featureData = propertyData.reonomyProperties.items[0];
+
+	const { data } = useSuspenseQuery<SalesData>(GET_SALES_INFO);
+	const salesData = data.reonomyProperties.items;
 
 	//---------------------------------------------------------Converts Property Data Object to array of Keys and Values
 	const propertyDataArray = featureData ? Object.entries(featureData) : null;
@@ -115,20 +144,25 @@ const PropertyDetails = ({ pID }: Props) => {
 				</span>
 			</div>
 			<div className="pd-info-selector">
-				<div className="pd-info-btn border-solid border-b-2 border-white text-white">
-					Building & Lot
-				</div>
-				<div className="pd-info-btn">Owner</div>
-				<div className="pd-info-btn">Sales</div>
-				<div className="pd-info-btn">Debt</div>
-				<div className="pd-info-btn">Financials</div>
+				<button onClick={()=>{setActiveTab(1)}} className={`pd-info-btn ${activeTab === 1 && 'border-underline'}`}>Building & Lot</button>
+				<button onClick={()=>{setActiveTab(2)}} className={`pd-info-btn ${activeTab === 2 && 'border-underline'}`}>Owner</button>
+				<button onClick={()=>{setActiveTab(3)}} className={`pd-info-btn ${activeTab === 3 && 'border-underline'}`}>Sales</button>
+				<button onClick={()=>{setActiveTab(4)}} className={`pd-info-btn ${activeTab === 4 && 'border-underline'}`}>Debt</button>
+				<button onClick={()=>{setActiveTab(5)}} className={`pd-info-btn ${activeTab === 5 && 'border-underline'}`}>Financials</button>
 			</div>
-			{featureData ? (
+			{(activeTab === 1) && featureData ? (
 				<div className="pd-cards">
-					<DetailCard title={`Building`} data={buildingData} />
-					<DetailCard title={`Lot`} data={lotData} />
-					<DetailCard title={`Location`} data={locData} />
-					<DetailCard title={`Zoning`} data={zoneData} />
+					<DetailCard title={`Building`} data={buildingData} matches={Building} />
+					<DetailCard title={`Lot`} data={lotData} matches={Lot} />
+					<DetailCard title={`Location`} data={locData} matches={Location} />
+					<DetailCard title={`Zoning`} data={zoneData} matches={Zoning} />
+				</div>
+			) : (
+				<></>
+			)}
+			{(activeTab === 3) && featureData ? (
+				<div className="pd-cards">
+					<SalesTable salesData={salesData} />
 				</div>
 			) : (
 				<></>
