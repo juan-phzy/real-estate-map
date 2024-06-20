@@ -5,7 +5,7 @@ import { MapSearchParams } from "@/constants/index";
 const page = ({searchParams}: {searchParams: MapSearchParams}) => {
 	return (
 		<section className="main-page">
-			<MapBox searchParams={searchParams} />
+			<MapBox googleKey={process.env.GOOGLE_API_KEY ?? ''} mapKey={process.env.MAPBOX_TOKEN ?? ''} searchParams={searchParams} />
 		</section>
 	);
 };
