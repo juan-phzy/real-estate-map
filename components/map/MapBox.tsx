@@ -172,7 +172,7 @@ export default function MapBox({searchParams}: {readonly searchParams: MapSearch
 			<div className="map-container">
 				<Map
 					ref={mapRef}
-					mapboxAccessToken={process.env.MAPBOX_TOKEN}
+					mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
 					initialViewState={{
 						latitude: mapPosition.lat,
 						longitude: mapPosition.lon,
@@ -204,7 +204,7 @@ export default function MapBox({searchParams}: {readonly searchParams: MapSearch
 									<div className="w-[200px] h-[200px] relative">
 										<Image
 											className="object-contain"
-											src={`https://maps.googleapis.com/maps/api/streetview?size=200x200&source=outdoor&pitch=10&fov=110&location=${adr},${city},${state}&key=${process.env.GOOGLE_API_KEY}`}
+											src={`https://maps.googleapis.com/maps/api/streetview?size=200x200&source=outdoor&pitch=10&fov=110&location=${adr},${city},${state}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`}
 											alt="Parcel Street View"
 											sizes="200px"
 											fill />
