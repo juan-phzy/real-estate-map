@@ -22,7 +22,7 @@ export default function RootLayout({
 				<ApolloWrapper>
 					<section className="body-container">
 						<div className={`header-container`}>
-							<Header />
+							<Header googleKey={process.env.GOOGLE_API_KEY ?? ''} />
 						</div>
 						<div className={`main-container`}>{children}</div>
 					</section>

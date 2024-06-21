@@ -22,7 +22,7 @@ interface ParcelByLocation {
 	]
 }
 
-const Header = () => {
+const Header = ({googleKey}:{googleKey:string}) => {
 
 	const router = useRouter();
     const [address, setAddress] = useState<string>('');
@@ -51,7 +51,7 @@ const Header = () => {
     }, []);
 
 	async function getGeocode(addr: string) {
-		const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addr}&key=${process.env.GOOGLE_API_KEY}`) // Adjust the endpoint as necessary
+		const res = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${addr}&key=${googleKey}`) // Adjust the endpoint as necessary
 		if (!res.ok) {
 			throw new Error('Failed to fetch data')
 		}
