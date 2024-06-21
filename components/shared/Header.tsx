@@ -102,7 +102,7 @@ const Header = ({googleKey}:{googleKey:string}) => {
 	return (
 		<>
             <Script
-                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_API_KEY}&libraries=places`}
+                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.googleKey}&libraries=places`}
                 strategy="afterInteractive"
                 onLoad={() => {
                     initializeAutocomplete();
