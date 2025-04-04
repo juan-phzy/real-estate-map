@@ -12,7 +12,7 @@ Juan Hernandez - [Connect With Me on LinkedIn !](www.linkedin.com/in/juan-hernan
 
 ## Vercel Deployment
 
-[Click here to view the active deployment of this project](https://real-estate-map-woad.vercel.app/)
+**This deployment is no longer active**
 
 ## Visuals
 #### Default Home Screen
